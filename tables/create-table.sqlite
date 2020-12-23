@@ -1,0 +1,38 @@
+-- Create tables with SQLite
+-- sqlite3 indicator.db
+-- .read create-table.sqlite
+
+
+-- Reference table
+CREATE TABLE "tbl_source" (
+       "id"      INTEGER,
+       "source"  TEXT,
+       PRIMARY KEY("source")
+);
+
+
+-- Main tables
+CREATE TABLE "tbl_title" (
+	"id"	         INTEGER NOT NULL UNIQUE,
+	"rap"	         INTEGER,
+	"title"	         TEXT NOT NULL,
+	"intro"	         TEXT,
+	"def"	         TEXT,
+	"dim_kh"	 TEXT,
+	"dim_nh"	 TEXT,
+	"file_kh"	 TEXT,
+	"file_nh"	 TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+CREATE TABLE "tbl_section" (
+       "id"     INTEGER,
+       "title"  TEXT,
+       "sect"   TEXT,
+       "fig"    TEXT,
+       "source"   TEXT,
+       FOREIGN KEY("id") REFERENCES "tbl_title"("id"),
+       FOREIGN KEY("source") REFERENCES "tbl_source"("source")
+);
+
+

@@ -1,0 +1,77 @@
+#+title: SQLite
+
+I need this reminder.
+* Create table
+** SQLite file
+When using sqlite directly
+
+#+begin_example
+  sqlite> CREATE TABLE People(Id INTEGER, LastName TEXT NOT NULL, 
+  ...> FirstName TEXT NOT NULL, City TEXT);
+#+end_example
+
+Or by creating a script file with extention =*.sqlite=. (Extention can be anything)
+
+#+begin_src sql
+  CREATE TABLE "tbl_source" (
+  "id"      INTEGER,
+  "source"  TEXT,
+  PRIMARY KEY("source")
+  );
+
+  CREATE TABLE "tbl_section" (
+  "id"     INTEGER,
+  "title"  TEXT,
+  "sect"   TEXT,
+  "fig"    TEXT,
+  "source"   TEXT,
+  FOREIGN KEY("source") REFERENCES "tbl_source"("source")
+  );
+#+end_src
+** R package
+Using =RSQLite= package in R.
+
+#+BEGIN_SRC R
+  library(DBI)
+  library(RSQLite)
+
+  dbc <- DBI::dbConnect(SQLite(), dbname = "indicator.db")
+
+  sq_title <-  '
+  CREATE TABLE "tbl_title" (
+          "id"	         INTEGER NOT NULL UNIQUE,
+          "rap"	         INTEGER,
+          "title"	         TEXT NOT NULL,
+          "intro"	         TEXT,
+          PRIMARY KEY("id" AUTOINCREMENT)
+  );
+  '
+  DBI::dbSendQuery(
+         conn = dbc,
+         statement = sq_title)
+
+
+
+  sq_section <- '
+  CREATE TABLE "tbl_section" (
+         "id"     INTEGER,
+         "title"  TEXT,
+         "sect"   TEXT,
+         FOREIGN KEY(id) REFERENCES tbl_title(id)
+  );
+  '
+
+  RSQLite::dbSendQuery(
+             conn = dbc,
+             statement = sq_section)
+
+#+END_SRC
+
+*PRIMARY KEY* is a *FOREIGN KEY* in when referenced in another tables.
+
+* Run sqlite script
+To execute an SQLite script in another files:
+#+begin_src shell
+  sqlite3 indicator.db
+  ..sqlite> .read script_file.sqlite
+#+end_src 
