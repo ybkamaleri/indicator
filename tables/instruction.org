@@ -10,13 +10,14 @@ When using sqlite directly
   ...> FirstName TEXT NOT NULL, City TEXT);
 #+end_example
 
-Or by creating a script file with extention =*.sqlite=. (Extention can be anything)
+Or by creating a script file with extention =*.sqlite=. (Extention can be anything). You can also
+specify the column names without quote.
 
 #+begin_src sql
-  CREATE TABLE "tbl_source" (
-  "id"      INTEGER,
-  "source"  TEXT,
-  PRIMARY KEY("source")
+  CREATE TABLE tbl_source (
+  id      INTEGER,
+  source  TEXT,
+  PRIMARY KEY(source)
   );
 
   CREATE TABLE "tbl_section" (
@@ -28,6 +29,8 @@ Or by creating a script file with extention =*.sqlite=. (Extention can be anythi
   FOREIGN KEY("source") REFERENCES "tbl_source"("source")
   );
 #+end_src
+
+
 ** R package
 Using =RSQLite= package in R.
 
@@ -53,10 +56,10 @@ Using =RSQLite= package in R.
 
 
   sq_section <- '
-  CREATE TABLE "tbl_section" (
-         "id"     INTEGER,
-         "title"  TEXT,
-         "sect"   TEXT,
+  CREATE TABLE tbl_section(
+         id     INTEGER,
+         title  TEXT,
+         sect   TEXT,
          FOREIGN KEY(id) REFERENCES tbl_title(id)
   );
   '
