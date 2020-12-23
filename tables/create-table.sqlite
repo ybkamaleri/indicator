@@ -4,14 +4,27 @@
 
 
 -- Reference table
-CREATE TABLE "tbl_source" (
-       "id"      INTEGER,
-       "source"  TEXT,
-       PRIMARY KEY("source")
+/*
+Source data either NORGESHELSE or KOMMUNEHELSA
+*/
+CREATE TABLE tbl_source (
+       id      INTEGER,
+       source  TEXT,
+       PRIMARY KEY(source)
 );
 
 
--- Main tables
+-- Title tables
+/*
+rap - Produce report or not
+title - Title of the report 
+intro - Introduction text for the report
+def - Define the data source in the report
+dim_kh - Specify the filter or dimension to be used for KOMMUNEHELSA
+dim_nh - Specify the filter or dimension to be used for NORGESHELSE
+file_kh - Filename for the analysis for KOMMUNEHELSA
+file_nh - Filename for the analysis for NORGESHELSE
+*/
 CREATE TABLE "tbl_title" (
 	"id"	         INTEGER NOT NULL UNIQUE,
 	"rap"	         INTEGER,
@@ -25,14 +38,24 @@ CREATE TABLE "tbl_title" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-CREATE TABLE "tbl_section" (
-       "id"     INTEGER,
-       "title"  TEXT,
-       "sect"   TEXT,
-       "fig"    TEXT,
-       "source"   TEXT,
-       FOREIGN KEY("id") REFERENCES "tbl_title"("id"),
-       FOREIGN KEY("source") REFERENCES "tbl_source"("source")
+
+-- Section table
+/*
+repid - Refer to the 'id' in 'tbl_title'
+sect - Which section of the report
+fig - Which figure to include in the specified section ie. maps or figure
+source - Refer to the 'tbl_source'
+col - Column name where the number to be selected
+*/
+
+CREATE TABLE tbl_section (
+       repid     INTEGER,
+       sect      TEXT,
+       fig       TEXT,
+       source    TEXT,
+       col       TEXT,
+       FOREIGN KEY(repid) REFERENCES tbl_title(id),
+       FOREIGN KEY(source) REFERENCES tbl_source(source)
 );
 
 

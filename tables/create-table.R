@@ -59,6 +59,7 @@ RSQLite::dbSendQuery(
 ## Create tables R ways with data.frame
 ## ------------------------------------
 ## But can't specify PRIMARY or FOREIGN KEY
+## Can be used to add data to database
 library(RSQLite)
 dbc2 <- RSQLite::dbConnect(SQLite(), dbname = "indicator2.db")
 
